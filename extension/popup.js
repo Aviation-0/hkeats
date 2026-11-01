@@ -16,6 +16,21 @@ document.addEventListener("DOMContentLoaded", async () => {
   const syncDateEl = document.getElementById("sync-date");
   const recentListEl = document.getElementById("recent-list");
   const clearCacheBtn = document.getElementById("clear-cache-btn");
+  const enabledToggle = document.getElementById("enabled-toggle");
+  const toggleHint = document.getElementById("toggle-hint");
+
+  // On/off switch: read by content.js through chrome.storage, so it applies to open Maps tabs at once
+  let serverOnline = false;
+  function showEnabled(enabled) {
+    enabledToggle.checked = enabled;
+    if (serverOnline) statusIndicator.textContent = enabled ? "Active" : "Off";
+    toggleHint.textContent = enabled ? "On" : "Off: the card stays hidden until you turn it back on";
+  }
+  chrome.storage.local.get("extensionEnabled", (s) => showEnabled(s?.extensionEnabled !== false));
+  enabledToggle?.addEventListener("change", () => {
+    showEnabled(enabledToggle.checked);
+    chrome.storage.local.set({ extensionEnabled: enabledToggle.checked });
+  });
 
   // Handle Clear Cache action
   clearCacheBtn?.addEventListener("click", () => {
@@ -44,8 +59,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         recordCountEl.textContent = "Server offline";
         syncDateEl.textContent = "—";
       } else {
+        serverOnline = true;
         statusIndicator.className = "status-pill status-online";
-        statusIndicator.textContent = "Active";
+        statusIndicator.textContent = enabledToggle.checked ? "Active" : "Off";
         recordCountEl.textContent = response.totalRecords
           ? `${Number(response.totalRecords).toLocaleString()} premises`
           : "Online";

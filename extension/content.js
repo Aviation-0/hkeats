@@ -11,6 +11,8 @@
   // Venue the user closed the card for; the card stays hidden until a different venue is opened
   let dismissedName = "";
   let dismissedAddress = "";
+  // On/off switch from the toolbar popup; stays off until the stored setting has been read
+  let isExtensionEnabled = false;
   let debounceTimerId = null;
   let pendingRecheck = false;
   let isChecking = false;
@@ -681,7 +683,8 @@
 
   // Render the widget UI
   function renderWidget({ status, placeName, secondaryName = "", data, error }) {
-    // A lookup that finishes after the user closed the card must not reopen it
+    // A lookup that finishes after the user closed the card (or switched the extension off) must not reopen it
+    if (!isExtensionEnabled) return;
     if (dismissedName && dismissedName === lastResolvedName) return;
     const container = getOrCreateWidget();
     container.style.display = "block";
@@ -1283,6 +1286,7 @@
     window.removeEventListener("resize", onWindowResize);
     window.removeEventListener("popstate", onWindowPopState);
     document.removeEventListener("click", onDocumentClick, true);
+    try { chrome.storage.onChanged.removeListener(onStorageChanged); } catch (_) {}
 
     const container = document.getElementById("eatsafe-hk-widget-root");
     if (container) {
@@ -1321,6 +1325,13 @@
   async function checkForPlaceUpdate() {
     if (isContextInvalidated || !isRuntimeValid()) {
       handleContextInvalidated();
+      return;
+    }
+    if (!isExtensionEnabled) {
+      const widgetRoot = document.getElementById("eatsafe-hk-widget-root");
+      if (widgetRoot) widgetRoot.style.display = "none";
+      lastPlaceKey = "";
+      lastResolvedName = "";
       return;
     }
     if (isChecking) {
@@ -1527,6 +1538,20 @@
     }
     checkForPlaceUpdate();
   }, 1500);
+
+  // Popup on/off switch: apply changes to this tab immediately
+  function onStorageChanged(changes, area) {
+    if (area !== "local" || !changes.extensionEnabled) return;
+    isExtensionEnabled = changes.extensionEnabled.newValue !== false;
+    checkForPlaceUpdate();
+  }
+  try {
+    chrome.storage.onChanged.addListener(onStorageChanged);
+    chrome.storage.local.get("extensionEnabled", (s) => {
+      isExtensionEnabled = s?.extensionEnabled !== false;
+      checkForPlaceUpdate();
+    });
+  } catch (_) {}
 
   // Initial check
   setTimeout(checkForPlaceUpdate, 500);
