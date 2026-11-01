@@ -99,7 +99,7 @@ Used exclusively to cache recent FEHD restaurant lookup responses locally (`chro
 | **Store Icon** | 128×128 PNG | ✅ Ready | `extension/icons/icon-128.png` |
 | **Toolbar Icons** | 16×16, 32×32, 48×48 PNG | ✅ Ready | `extension/icons/icon-16.png`, `icon-32.png`, `icon-48.png` |
 | **Screenshot 1 (Live Google Maps — Verified Licence)** | 1280×800 PNG | ✅ Ready | `store-assets/screenshot-real-1-google-maps-verified-1280x800.png` |
-| **Screenshot 2 (Live Google Maps — Past Suspension)** | 1280×800 PNG | ✅ Ready | `store-assets/screenshot-real-2-google-maps-past-suspension-1280x800.png` |
+| **Screenshot 2** | 1280×800 PNG | ⏳ To capture | Retake on real Google Maps with v1.0.6, e.g. the expanded details panel or an "Unverified Match" card. Do not use the old Krua Walaiphan "Past Suspension" capture: that suspension was a false match to a different "Shop No. 8, G/F" premises and Krua has no suspension record. |
 | ~~Simulator: Clean Verified Licence Card~~ | 1280×800 PNG | ⚠️ Do not upload — captured on the retired mock-maps simulator, not real Google Maps | `store-assets/screenshot-1-verified-licence-1280x800.png` |
 | ~~Simulator: Expanded Details & Licence Guide~~ | 1280×800 PNG | ⚠️ Do not upload — simulator capture; retake on real Google Maps | `store-assets/screenshot-2-licence-guide-1280x800.png` |
 | ~~Simulator: Master Licence & Suspension Alert~~ | 1280×800 PNG | ⚠️ Do not upload — simulator capture; retake on real Google Maps | `store-assets/screenshot-3-master-licence-1280x800.png` |
