@@ -1,0 +1,846 @@
+/* extension/content.css */
+/* Scoped EatSafe HK Google Maps Overlay Widget */
+
+#eatsafe-hk-widget-root {
+  position: fixed;
+  z-index: 2147483647;
+  top: 68px;
+  left: 420px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color: #1e293b;
+  box-sizing: border-box;
+  user-select: text;
+  pointer-events: auto;
+  transition: left 0.22s cubic-bezier(0.4, 0, 0.2, 1), top 0.2s ease, opacity 0.2s ease, transform 0.2s ease;
+  max-width: 360px;
+  width: 92vw;
+}
+
+@media (max-width: 900px) {
+  #eatsafe-hk-widget-root {
+    top: auto;
+    bottom: 24px;
+    left: 16px;
+    right: 16px;
+    max-width: none;
+    width: auto;
+  }
+}
+
+.eatsafe-card {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.25), 0 8px 10px -6px rgba(0, 0, 0, 0.15);
+  border: 1px solid #cbd5e1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: box-shadow 0.2s ease;
+}
+
+/* Header */
+.eatsafe-header {
+  background: #006837;
+  color: #ffffff;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 2px solid #ffcc00;
+  cursor: grab;
+  user-select: none;
+  touch-action: none;
+}
+
+.eatsafe-header:active {
+  cursor: grabbing;
+}
+
+.eatsafe-header-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+
+.eatsafe-header-badge {
+  background: rgba(255, 255, 255, 0.18);
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.eatsafe-badge-verified {
+  background: rgba(34, 197, 94, 0.3);
+  color: #ffffff;
+}
+
+.eatsafe-badge-concession {
+  background: rgba(245, 158, 11, 0.35);
+  color: #ffffff;
+}
+
+.eatsafe-badge-unverified {
+  background: rgba(148, 163, 184, 0.3);
+  color: #ffffff;
+}
+
+.eatsafe-badge-prepackaged {
+  background: rgba(14, 165, 233, 0.35);
+  color: #ffffff;
+}
+
+.eatsafe-badge-previously-suspended {
+  background: rgba(245, 158, 11, 0.35);
+  color: #ffffff;
+}
+
+.eatsafe-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.eatsafe-btn-icon {
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  cursor: pointer;
+  padding: 4px 6px;
+  border-radius: 4px;
+  font-size: 13px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s;
+}
+
+.eatsafe-btn-icon:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* Grey Theme for No Results / Unmatched */
+.eatsafe-card-not-found {
+  border-color: #94a3b8;
+}
+
+.eatsafe-card-not-found .eatsafe-header {
+  background: #475569;
+  border-bottom: 2px solid #94a3b8;
+}
+
+.eatsafe-card-not-found .eatsafe-header-badge {
+  background: rgba(255, 255, 255, 0.2);
+  color: #f1f5f9;
+}
+
+.eatsafe-card-not-found .eatsafe-footer-link {
+  background: #475569;
+}
+
+.eatsafe-card-not-found .eatsafe-footer-link:hover {
+  background: #334155;
+}
+
+/* Amber Theme for Offline / Local Server Disconnected */
+.eatsafe-card-offline {
+  border-color: #f59e0b;
+}
+
+.eatsafe-card-offline .eatsafe-header {
+  background: #b45309;
+  border-bottom: 2px solid #f59e0b;
+}
+
+.eatsafe-badge-offline {
+  background: rgba(254, 243, 199, 0.25);
+  color: #fef3c7;
+}
+
+.eatsafe-offline-body {
+  padding: 12px 14px;
+}
+
+.eatsafe-offline-msg {
+  font-size: 11px;
+  line-height: 1.45;
+  color: #475569;
+  margin: 6px 0;
+}
+
+.eatsafe-offline-msg code {
+  background: #f1f5f9;
+  padding: 2px 5px;
+  border-radius: 4px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 10px;
+  color: #b45309;
+}
+
+.eatsafe-offline-cmd {
+  background: #0f172a;
+  color: #38bdf8;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 7px 10px;
+  border-radius: 6px;
+  margin: 6px 0 10px 0;
+  letter-spacing: 0.3px;
+  user-select: all;
+}
+
+.eatsafe-retry-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  background: #b45309;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.1s ease;
+}
+
+.eatsafe-retry-btn:hover {
+  background: #92400e;
+}
+
+.eatsafe-retry-btn:active {
+  transform: scale(0.98);
+}
+
+/* Minimized Card State */
+.eatsafe-card.minimized .eatsafe-body,
+.eatsafe-card.minimized .eatsafe-details-panel,
+.eatsafe-card.minimized .eatsafe-loading,
+.eatsafe-card.minimized .eatsafe-not-found,
+.eatsafe-card.minimized .eatsafe-offline-body {
+  display: none !important;
+}
+
+.eatsafe-card.minimized .eatsafe-header {
+  border-bottom: none;
+}
+
+.eatsafe-card.minimized {
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.16);
+}
+
+.eatsafe-card.minimized ~ .eatsafe-fidelity-popover {
+  display: none !important;
+}
+
+/* Main Summary Body */
+.eatsafe-body {
+  padding: 12px 14px;
+  background: #ffffff;
+}
+
+.eatsafe-restaurant-name {
+  font-size: 15px;
+  font-weight: 800;
+  color: #0f172a;
+  line-height: 1.3;
+  margin-bottom: 4px;
+}
+
+.eatsafe-restaurant-tc {
+  font-size: 13px;
+  font-weight: 600;
+  color: #475569;
+  margin-bottom: 8px;
+}
+
+.eatsafe-address {
+  font-size: 11px;
+  color: #64748b;
+  display: flex;
+  align-items: flex-start;
+  gap: 4px;
+  margin-bottom: 10px;
+  line-height: 1.4;
+}
+
+/* Score Pill */
+.eatsafe-score-badge {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  border: 1px solid transparent;
+}
+
+.eatsafe-score-clean {
+  background: #ecfdf5;
+  color: #065f46;
+  border-color: #a7f3d0;
+}
+
+.eatsafe-score-warning {
+  background: #fffbeb;
+  color: #92400e;
+  border-color: #fde68a;
+}
+
+.eatsafe-score-suspended {
+  background: #fef2f2;
+  color: #991b1b;
+  border-color: #fecaca;
+}
+
+.eatsafe-score-concession {
+  background: #fefce8;
+  color: #854d0e;
+  border-color: #fef08a;
+}
+
+.eatsafe-score-prepackaged {
+  background: #f0f9ff;
+  color: #0369a1;
+  border-color: #bae6fd;
+}
+
+.eatsafe-score-previously-suspended {
+  background: #fffbeb;
+  color: #92400e;
+  border-color: #fde68a;
+}
+
+.eatsafe-score-unverified {
+  background: #f1f5f9;
+  color: #475569;
+  border-color: #cbd5e1;
+}
+
+.eatsafe-demerit-tag {
+  font-size: 11px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.06);
+}
+
+.eatsafe-discrepancy-box {
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+  border-radius: 6px;
+  padding: 8px 10px;
+  font-size: 11px;
+  color: #92400e;
+  line-height: 1.4;
+  margin-bottom: 10px;
+}
+
+.eatsafe-registered-name-box {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 11px;
+  color: #334155;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.eatsafe-tag-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: #64748b;
+  text-transform: uppercase;
+}
+
+.eatsafe-tag-val {
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.eatsafe-unverified-warning {
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  padding: 8px 10px;
+  font-size: 11px;
+  color: #475569;
+  line-height: 1.4;
+  margin-bottom: 10px;
+}
+
+.eatsafe-ai-insight {
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 6px;
+  padding: 8px 10px;
+  font-size: 11px;
+  color: #1e40af;
+  line-height: 1.4;
+  margin-bottom: 10px;
+}
+
+/* Dropdown Accordion Button */
+.eatsafe-dropdown-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #334155;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.eatsafe-dropdown-btn:hover {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+  color: #0f172a;
+}
+
+.eatsafe-chevron {
+  font-size: 9px;
+  transition: transform 0.2s ease;
+}
+
+.eatsafe-chevron.open {
+  transform: rotate(180deg);
+}
+
+/* Expanded Details Panel */
+.eatsafe-details-panel {
+  display: none;
+  padding: 12px 14px;
+  background: #f8fafc;
+  border-top: 1px solid #e2e8f0;
+  font-size: 11px;
+  max-height: 280px;
+  overflow-y: auto;
+}
+
+.eatsafe-details-panel.open {
+  display: block;
+}
+
+.eatsafe-section-title {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #64748b;
+  letter-spacing: 0.5px;
+  margin-top: 10px;
+  margin-bottom: 4px;
+}
+
+.eatsafe-section-title:first-child {
+  margin-top: 0;
+}
+
+.eatsafe-violations-box {
+  padding: 8px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+  line-height: 1.45;
+  white-space: pre-line;
+  margin-bottom: 8px;
+}
+
+.eatsafe-violations-clean {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  color: #166534;
+}
+
+.eatsafe-violations-warning {
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+  color: #92400e;
+}
+
+.eatsafe-violations-suspended {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #991b1b;
+}
+
+/* Metadata Grid */
+.eatsafe-grid-meta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px 10px;
+  margin-bottom: 10px;
+}
+
+.eatsafe-meta-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.eatsafe-meta-item strong {
+  font-size: 9px;
+  text-transform: uppercase;
+  color: #64748b;
+}
+
+.eatsafe-meta-title-row {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* Fidelity-Style Green Outline '?' Button */
+.eatsafe-fidelity-help-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  border: 1.5px solid #006837;
+  background: #ffffff;
+  color: #006837;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0;
+  box-sizing: border-box;
+  transition: all 0.15s ease;
+  user-select: none;
+}
+
+.eatsafe-fidelity-help-btn:hover {
+  background: #e8f5e9;
+  border-color: #004d28;
+  color: #004d28;
+}
+
+/* Active State: Solid green circle with dark focus outline matching Fidelity */
+.eatsafe-fidelity-help-btn.active {
+  background: #006837;
+  color: #ffffff;
+  border-color: #006837;
+  box-shadow: 0 0 0 2px #0f172a;
+}
+
+/* Fidelity-Style Help Popover Box */
+.eatsafe-fidelity-popover {
+  display: none;
+  position: absolute;
+  background: #ffffff !important;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.2), 0 10px 10px rgba(0, 0, 0, 0.12);
+  padding: 16px 18px;
+  z-index: 2147483647;
+  width: 350px;
+  box-sizing: border-box;
+  color: #111827;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  top: 100px;
+  left: calc(100% + 14px);
+}
+
+.eatsafe-fidelity-popover.open {
+  display: block;
+  animation: eatsafe-fidelity-fade-in 0.18s ease-out;
+}
+
+@keyframes eatsafe-fidelity-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Speech-bubble beak/arrow pointing left towards the ? button */
+.eatsafe-fidelity-popover::before {
+  content: "";
+  position: absolute;
+  left: -8px;
+  top: var(--arrow-top, 60px);
+  width: 0;
+  height: 0;
+  border-top: 8px solid transparent;
+  border-bottom: 8px solid transparent;
+  border-right: 8px solid #d1d5db;
+}
+
+.eatsafe-fidelity-popover::after {
+  content: "";
+  position: absolute;
+  left: -7px;
+  top: var(--arrow-top, 60px);
+  width: 0;
+  height: 0;
+  border-top: 7px solid transparent;
+  border-bottom: 7px solid transparent;
+  border-right: 7px solid #ffffff;
+}
+
+/* Responsive fallback if viewport is narrow or right side is restricted */
+@media (max-width: 1150px) {
+  .eatsafe-fidelity-popover {
+    position: fixed !important;
+    top: 80px !important;
+    left: 20px !important;
+    right: 20px !important;
+    width: auto !important;
+    max-width: 380px !important;
+    margin: 0 auto;
+    box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.3);
+  }
+  .eatsafe-fidelity-popover::before,
+  .eatsafe-fidelity-popover::after {
+    display: none;
+  }
+}
+
+.eatsafe-fidelity-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.eatsafe-fidelity-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #111827;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.eatsafe-fidelity-close {
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  font-weight: 400;
+  color: #006837;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0 4px;
+  transition: color 0.15s;
+}
+
+.eatsafe-fidelity-close:hover {
+  color: #0f172a;
+}
+
+.eatsafe-fidelity-scroll {
+  max-height: 420px;
+  overflow-y: auto;
+  padding-right: 6px;
+}
+
+.eatsafe-fidelity-scroll::-webkit-scrollbar {
+  width: 5px;
+}
+
+.eatsafe-fidelity-scroll::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 4px;
+}
+
+.eatsafe-fidelity-scroll::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+.eatsafe-fidelity-subhead {
+  font-size: 13px;
+  font-weight: 500;
+  color: #111827;
+  margin: 0 0 12px 0;
+}
+
+.eatsafe-fidelity-item {
+  margin-bottom: 12px;
+}
+
+/* ALL ITEM TITLES ARE THE EXACT SAME FIDELITY GREEN COLOR */
+.eatsafe-fidelity-item-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: #006837;
+  margin: 0 0 3px 0;
+  line-height: 1.3;
+}
+
+.eatsafe-fidelity-item-desc {
+  font-size: 12px;
+  color: #374151;
+  line-height: 1.45;
+  margin: 0;
+}
+
+.eatsafe-fidelity-divider {
+  border-top: 1px solid #e5e7eb;
+  margin: 14px 0 12px 0;
+}
+
+.eatsafe-fidelity-accordion-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: none;
+  font-size: 13px;
+  font-weight: 700;
+  color: #111827;
+  cursor: pointer;
+  padding: 4px 0;
+  width: 100%;
+  text-align: left;
+}
+
+.eatsafe-fidelity-accordion-chevron {
+  display: inline-block;
+  font-size: 13px;
+  font-weight: 700;
+  transition: transform 0.2s ease;
+}
+
+.eatsafe-fidelity-accordion-chevron.open {
+  transform: rotate(90deg);
+}
+
+.eatsafe-fidelity-accordion-content {
+  display: none;
+  padding-top: 10px;
+}
+
+.eatsafe-fidelity-accordion-content.open {
+  display: block;
+}
+
+.eatsafe-meta-item span {
+  font-size: 11px;
+  color: #1e293b;
+  font-weight: 500;
+}
+
+.eatsafe-footer-link {
+  display: block;
+  text-align: center;
+  background: #006837;
+  color: #ffffff !important;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+  margin-top: 8px;
+  transition: background 0.15s;
+}
+
+.eatsafe-footer-link:hover {
+  background: #004d28;
+}
+
+/* Loading & Empty States */
+.eatsafe-loading {
+  padding: 24px 16px;
+  text-align: center;
+  font-size: 12px;
+  color: #475569;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.eatsafe-spinner {
+  width: 24px;
+  height: 24px;
+  border: 3px solid #e2e8f0;
+  border-top-color: #006837;
+  border-radius: 50%;
+  animation: eatsafe-spin 0.8s linear infinite;
+}
+
+@keyframes eatsafe-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.eatsafe-not-found {
+  padding: 16px 14px;
+  font-size: 12px;
+  color: #334155;
+  line-height: 1.4;
+}
+
+/* Specific Food Premises Licence Badges (Food Factory, Bakery, Restaurant, etc.) */
+.eatsafe-licence-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 6px;
+  margin-bottom: 8px;
+  border: 1px solid transparent;
+}
+
+.eatsafe-type-restaurant {
+  background: #f0fdf4;
+  color: #166534;
+  border-color: #bbf7d0;
+}
+
+.eatsafe-type-factory {
+  background: #eff6ff;
+  color: #1d4ed8;
+  border-color: #bfdbfe;
+}
+
+.eatsafe-type-bakery {
+  background: #fdf4ff;
+  color: #86198f;
+  border-color: #f5d0fe;
+}
+
+.eatsafe-type-refreshment {
+  background: #fefce8;
+  color: #854d0e;
+  border-color: #fef08a;
+}
+
+.eatsafe-type-fresh {
+  background: #f0fdfa;
+  color: #0f766e;
+  border-color: #99f6e4;
+}
+
+.eatsafe-type-general {
+  background: #f8fafc;
+  color: #334155;
+  border-color: #cbd5e1;
+}
+

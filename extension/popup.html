@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>EatSafe HK</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <header class="header">
+    <div class="logo">
+      <img src="icons/icon-32.png" alt="EatSafe HK" class="logo-icon">
+      <div>
+        <div class="title">EatSafe HK</div>
+        <div class="subtitle">Google Maps Hygiene Inspector</div>
+      </div>
+    </div>
+    <div id="status-indicator" class="status-pill status-loading">Checking...</div>
+  </header>
+
+  <main class="main">
+    <div class="server-card">
+      <div class="server-row">
+        <span>FEHD Open Data Feed:</span>
+        <strong id="record-count">Loading...</strong>
+      </div>
+      <div class="server-row">
+        <span>Sync Generation Date:</span>
+        <strong id="sync-date">Loading...</strong>
+      </div>
+      <div class="server-row">
+        <span>API Endpoint:</span>
+        <span class="font-mono text-emerald-700" id="server-status">eatsafe-hk.pages.dev</span>
+      </div>
+    </div>
+
+    <div class="section-title">Recently Inspected on Google Maps</div>
+    <div id="recent-list" class="recent-list">
+      <div class="empty-state">No places inspected yet. Click any restaurant in Google Maps to see its official safety rating!</div>
+    </div>
+
+    <div style="margin: 10px 0;">
+      <button id="clear-cache-btn" class="clear-cache-btn" title="Purge locally cached records and sync fresh data">
+        🔄 Clear Extension Cache
+      </button>
+    </div>
+
+    <a href="https://eatsafe-hk.pages.dev" target="_blank" rel="noopener noreferrer" class="portal-btn">
+      Open Full EatSafe HK Search Portal ↗
+    </a>
+
+    <footer class="popup-footer">
+      <div>© 2026 EatSafe HK • <a href="https://eatsafe-hk.pages.dev/privacy" target="_blank" rel="noopener noreferrer">Privacy Policy</a></div>
+      <div class="popup-disclaimer">Data: FEHD Open Data (DATA.GOV.HK). Independent tool, not affiliated with HKSAR Gov or Google LLC.</div>
+    </footer>
+  </main>
+
+  <script src="popup.js"></script>
+</body>
+</html>

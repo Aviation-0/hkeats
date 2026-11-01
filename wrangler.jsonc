@@ -1,0 +1,18 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "eatsafe-hk",
+  "compatibility_date": "2026-09-20",
+  "pages_build_output_dir": "public",
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "eatsafe-hk-db",
+      "database_id": "cec1be0d-51cb-477e-b840-09bb76c545d0"
+    },
+    {
+      "binding": "eatsafe_hk_db",
+      "database_name": "eatsafe-hk-db",
+      "database_id": "cec1be0d-51cb-477e-b840-09bb76c545d0"
+    }
+  ]
+}

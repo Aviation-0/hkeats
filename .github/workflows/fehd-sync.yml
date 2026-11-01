@@ -1,0 +1,40 @@
+name: Daily FEHD Sync to Cloudflare D1
+
+on:
+  schedule:
+    # Runs at 21:00 UTC (05:00 Hong Kong Time) every day after FEHD overnight publication
+    - cron: '0 21 * * *'
+  workflow_dispatch: # Allows manual one-click trigger from GitHub Actions tab
+
+permissions:
+  contents: read
+
+jobs:
+  sync-fehd:
+    name: Sync Hong Kong FEHD Records to D1
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          # lib/fehd-sync.mjs imports node:sqlite, which needs Node 22.13+
+          node-version: 22
+          cache: 'npm'
+
+      - name: Install dependencies
+        env:
+          PUPPETEER_SKIP_DOWNLOAD: 'true'
+        run: npm ci
+
+      # Diffs FEHD against the live D1 rows (no baseline file to commit back) and geocodes only
+      # addresses that are new or changed since the last run
+      - name: Execute Incremental Diff Sync to Cloudflare D1
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID || '2db881a53653835a68678cafda6972df' }}
+        run: node scripts/sync_d1_diff.mjs

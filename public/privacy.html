@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy & Legal Attribution | EatSafe HK Chrome Extension</title>
+  <link rel="icon" href="/favicon.ico">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+
+  <!-- Header -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm">
+    <div class="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between">
+      <a href="/" class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-xl bg-emerald-600 flex items-center justify-center text-white shadow-sm">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+          </svg>
+        </div>
+        <span class="text-lg font-bold tracking-tight text-slate-900">EatSafe <span class="text-emerald-600">HK</span></span>
+      </a>
+      <a href="/" class="text-sm font-semibold text-emerald-600 hover:text-emerald-700">&larr; Back to Portal</a>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="max-w-4xl mx-auto px-4 py-10 flex-1 w-full">
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-10 space-y-8">
+      <div class="border-b border-slate-200 pb-6">
+        <span class="inline-block px-3 py-1 bg-emerald-50 text-emerald-700 text-xs font-bold rounded-full border border-emerald-200 mb-3 uppercase tracking-wider">
+          Chrome Web Store User Data Policy
+        </span>
+        <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Privacy Policy — EatSafe HK Chrome Extension</h1>
+        <p class="text-xs text-slate-500 mt-2">Effective Date: October 18, 2026 &bull; Last Updated: October 31, 2026 (v1.0.5)</p>
+      </div>
+
+      <section class="space-y-3 text-sm leading-relaxed text-slate-700">
+        <h2 class="text-lg font-bold text-slate-900">1. Overview</h2>
+        <p>
+          <strong>EatSafe HK</strong> ("the Extension") is a browser tool that displays official Hong Kong Food and Environmental Hygiene Department (FEHD) food licence records, statutory suspension orders, and permit details when a user views a Hong Kong restaurant or food establishment on Google Maps.
+        </p>
+        <p>
+          We are committed to protecting user privacy. <strong>EatSafe HK does not collect, store, sell, or share any personally identifiable information (PII), user accounts, or general web browsing history.</strong>
+        </p>
+      </section>
+
+      <section class="space-y-3 text-sm leading-relaxed text-slate-700">
+        <h2 class="text-lg font-bold text-slate-900">2. Information Accessed and Processed</h2>
+        <p>To perform its single purpose of matching a selected Google Maps restaurant to its official FEHD food licence record, the Extension accesses ONLY the following public restaurant details from the active Google Maps place panel when a user selects a food venue in Hong Kong:</p>
+        <ul class="list-disc pl-6 space-y-1">
+          <li><strong>Restaurant Name</strong> (English and/or Traditional Chinese shop sign displayed in the Google Maps place heading)</li>
+          <li><strong>Street Address</strong> (The public street address of the restaurant shown on Google Maps)</li>
+          <li><strong>Place Coordinates</strong> (The public latitude and longitude coordinates of the restaurant pin embedded in the Google Maps place URL)</li>
+        </ul>
+        <p class="text-xs bg-slate-50 border border-slate-200 rounded-lg p-3 text-slate-600">
+          <strong>Important:</strong> The Extension reads the geographic coordinates of the <em>selected restaurant pin</em> from the Google Maps URL to distinguish same-name branches across districts. It never accesses your personal device GPS or physical user location.
+        </p>
+      </section>
+
+      <section class="space-y-3 text-sm leading-relaxed text-slate-700">
+        <h2 class="text-lg font-bold text-slate-900">3. How Information Is Used</h2>
+        <ol class="list-decimal pl-6 space-y-1.5">
+          <li><strong>FEHD Registry Matching:</strong> When you click on a Hong Kong restaurant in Google Maps, the restaurant's public name, street address, and pin coordinates are sent over HTTPS to the EatSafe HK API (<code>https://eatsafe-hk.pages.dev/api/restaurants</code>) to query our indexed database of official FEHD open-data food licences and suspension notices.</li>
+          <li><strong>Local Device Caching (<code>chrome.storage.local</code>):</strong> To minimize network requests and speed up repeated lookups, matched FEHD licence results (6-hour TTL) and the last 10 inspected restaurant summaries are cached locally in your browser using <code>chrome.storage.local</code>. Users can purge this cache at any time via the "Clear Extension Cache" button in the extension popup.</li>
+        </ol>
+      </section>
+
+      <section class="space-y-3 text-sm leading-relaxed text-slate-700">
+        <h2 class="text-lg font-bold text-slate-900">4. Information We Do NOT Collect</h2>
+        <ul class="list-disc pl-6 space-y-1">
+          <li>We do <strong>not</strong> collect names, email addresses, IP logs, or Google account credentials.</li>
+          <li>We do <strong>not</strong> use cookies, third-party analytics trackers, telemetry scripts, or crash-reporting SDKs.</li>
+          <li>We do <strong>not</strong> track your search queries on Google Search or any website outside Google Maps place panels.</li>
+          <li>We do <strong>not</strong> access your personal GPS / physical device geolocation.</li>
+        </ul>
+      </section>
+
+      <section class="space-y-3 text-sm leading-relaxed text-slate-700">
+        <h2 class="text-lg font-bold text-slate-900">5. Data Sharing &amp; Chrome Web Store Limited Use Disclosure</h2>
+        <p>We do <strong>not</strong> sell, rent, trade, or transfer any data to third parties, data brokers, or advertising networks.</p>
+        <div class="bg-emerald-50/70 border border-emerald-200 rounded-xl p-4 text-emerald-950 font-medium">
+          The use of information received from Google APIs and browser APIs adheres strictly to the <a href="https://developer.chrome.com/docs/webstore/program-policies/limited-use" target="_blank" rel="noopener noreferrer" class="underline font-bold">Chrome Web Store User Data Policy</a>, including the Limited Use requirements.
+        </div>
+      </section>
+
+      <section class="space-y-3 text-sm leading-relaxed text-slate-700">
+        <h2 class="text-lg font-bold text-slate-900">6. Permissions Summary</h2>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse border border-slate-200 text-xs">
+            <thead>
+              <tr class="bg-slate-100 text-slate-700">
+                <th class="border border-slate-200 p-2.5">Permission</th>
+                <th class="border border-slate-200 p-2.5">Purpose</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="border border-slate-200 p-2.5 font-mono font-semibold">storage</td>
+                <td class="border border-slate-200 p-2.5">Caches recent FEHD licence lookups and extension state locally on your device via <code>chrome.storage.local</code>.</td>
+              </tr>
+              <tr>
+                <td class="border border-slate-200 p-2.5 font-mono font-semibold">*://*.google.com/maps/*<br>*://*.google.com.hk/maps/*</td>
+                <td class="border border-slate-200 p-2.5">Allows the content script to read the selected restaurant's name/address in the Google Maps sidebar and render the EatSafe HK licence card.</td>
+              </tr>
+              <tr>
+                <td class="border border-slate-200 p-2.5 font-mono font-semibold">https://eatsafe-hk.pages.dev/*</td>
+                <td class="border border-slate-200 p-2.5">Allows the extension to query the EatSafe HK FEHD licence verification API over HTTPS and run on the interactive demo page.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="space-y-3 text-sm leading-relaxed text-slate-700 border-t border-slate-200 pt-6">
+        <h2 class="text-lg font-bold text-slate-900">7. Copyright, Open Data Attribution &amp; Non-Affiliation Disclaimer</h2>
+        <p>
+          <strong>&copy; 2026 EatSafe HK. All rights reserved.</strong>
+        </p>
+        <p>
+          <strong>Public Sector Information Attribution:</strong> Food licence, permit, and enforcement records displayed by EatSafe HK are sourced from official public datasets provided by the <strong>Food and Environmental Hygiene Department (FEHD)</strong> and the <strong>Government of the Hong Kong Special Administrative Region (HKSAR)</strong> via <a href="https://data.gov.hk" target="_blank" rel="noopener noreferrer" class="text-emerald-600 underline">DATA.GOV.HK</a> in accordance with the DATA.GOV.HK Terms of Use.
+        </p>
+        <p>
+          <strong>Independent Tool Disclaimer:</strong> EatSafe HK is an independent consumer transparency project and is <strong>not</strong> affiliated with, sponsored by, or endorsed by the Food and Environmental Hygiene Department (FEHD), the Government of the Hong Kong Special Administrative Region, or Google LLC. Google Maps&trade; is a trademark of Google LLC.
+        </p>
+      </section>
+
+      <section class="space-y-2 text-sm leading-relaxed text-slate-700 border-t border-slate-200 pt-6">
+        <h2 class="text-lg font-bold text-slate-900">8. Contact</h2>
+        <p>
+          If you have any questions regarding this Privacy Policy or the Extension's data practices, please contact us via the <a href="https://eatsafe-hk.pages.dev" class="text-emerald-600 underline font-semibold">EatSafe HK Web Portal</a> or through the Support tab on the Chrome Web Store listing.
+        </p>
+      </section>
+    </div>
+  </main>
+
+  <footer class="bg-white border-t border-slate-200 py-6 text-center text-xs text-slate-500">
+    <div class="max-w-4xl mx-auto px-4">
+      &copy; 2026 EatSafe HK &bull; Data: Hong Kong FEHD (<a href="https://data.gov.hk" target="_blank" rel="noopener noreferrer" class="underline">DATA.GOV.HK</a>) &bull; <a href="/" class="text-emerald-600 hover:underline">Search Portal</a>
+    </div>
+  </footer>
+
+</body>
+</html>

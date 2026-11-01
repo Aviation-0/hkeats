@@ -1,0 +1,13 @@
+node_modules/
+.next/
+.wrangler/
+*.tsbuildinfo
+.geocode_cache.json
+.d1sync-*/
+d1_diff_update.sql
+
+# Local debugging and regenerable data dumps
+scratch/
+d1_export/
+restaurants.db
+/''
