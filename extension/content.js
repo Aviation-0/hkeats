@@ -840,7 +840,7 @@
       demeritTagText = "Suspension Active";
     } else if (isConcession) {
       badgeClass = "eatsafe-score-concession";
-      badgeTitle = `Master Licence (${escapeHtml(r.parentEntity || "Parent Entity")})`;
+      badgeTitle = `Master Licence (${r.parentEntity || "Parent Entity"})`;
       demeritTagText = "Active Licence";
     } else if (isPreviouslySuspended) {
       badgeClass = "eatsafe-score-previously-suspended";
@@ -930,7 +930,7 @@
           <!-- Score Pill -->
           <div class="eatsafe-score-badge ${badgeClass}">
             <div style="display: flex; align-items: center; gap: 6px;">
-              <span>${badgeTitle}</span>
+              <span>${escapeHtml(badgeTitle)}</span>
             </div>
             <span class="eatsafe-demerit-tag">${demeritTagText}</span>
           </div>
