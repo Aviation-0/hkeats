@@ -8,6 +8,9 @@
   let lastResolvedName = "";
   let lastResolvedAddress = "";
   let hydrationRetriedForName = "";
+  // Venue the user closed the card for; the card stays hidden until a different venue is opened
+  let dismissedName = "";
+  let dismissedAddress = "";
   let debounceTimerId = null;
   let pendingRecheck = false;
   let isChecking = false;
@@ -667,6 +670,8 @@
     closeBtn?.addEventListener("click", (e) => {
       e.stopPropagation();
       container.style.display = "none";
+      dismissedName = lastResolvedName;
+      dismissedAddress = lastResolvedAddress;
       if (guidePopover) guidePopover.classList.remove("open");
       if (guideTrigger) guideTrigger.classList.remove("active");
     });
@@ -676,6 +681,8 @@
 
   // Render the widget UI
   function renderWidget({ status, placeName, secondaryName = "", data, error }) {
+    // A lookup that finishes after the user closed the card must not reopen it
+    if (dismissedName && dismissedName === lastResolvedName) return;
     const container = getOrCreateWidget();
     container.style.display = "block";
 
@@ -1340,6 +1347,18 @@
 
     const normName = name.toLowerCase();
     const normAddr = (address || "").toLowerCase();
+
+    // Keep a closed card hidden while the same venue stays open. An empty address means the panel
+    // is still hydrating, so only a different name or a different known address counts as a new venue.
+    if (dismissedName) {
+      const sameVenue = normName === dismissedName && (!normAddr || !dismissedAddress || normAddr === dismissedAddress);
+      if (sameVenue) {
+        if (container) container.style.display = "none";
+        return;
+      }
+      dismissedName = "";
+      dismissedAddress = "";
+    }
 
     // SPA Hydration Guard: When clicking a new restaurant on Google Maps, h1.DUwDvf updates
     // ~120-200ms BEFORE the address button & URL pin coordinates finish hydrating (often still empty
