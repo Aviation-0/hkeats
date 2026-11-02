@@ -65,8 +65,12 @@ function normalizeForCompare(str) {
 }
 
 // Build a canonical URL for Cloudflare Edge Cache so sub-meter GPS jitter hits the same cache entry
+// Bump when matching/ranking changes so the edge cache never serves results ranked by older code
+const RANKING_VERSION = "2";
+
 function buildNormalizedCacheUrl(url) {
   const norm = new URL(url.origin + url.pathname);
+  norm.searchParams.set("_rv", RANKING_VERSION);
   const entries = [];
   for (const [k, v] of url.searchParams.entries()) {
     const val = v.trim();
@@ -82,7 +86,7 @@ function buildNormalizedCacheUrl(url) {
   }
   entries.sort((a, b) => a[0].localeCompare(b[0]));
   for (const [k, v] of entries) {
-    norm.searchParams.set(k, v);
+    if (k !== "_rv") norm.searchParams.set(k, v);
   }
   return norm.toString();
 }
