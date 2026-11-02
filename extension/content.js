@@ -963,9 +963,9 @@
               : ""
           }
 
-          <!-- Concession / Discrepancy Notice -->
+          <!-- Concession / Discrepancy Notice (dai pai dong and pre-packaged cards already show their own notice) -->
           ${
-            r.discrepancyNote
+            r.discrepancyNote && !isDaiPaiDong && !isPrepackaged
               ? `<div class="eatsafe-discrepancy-box">
                   <strong>Master Licence Notice:</strong> ${escapeHtml(r.discrepancyNote)}
                 </div>`
