@@ -60,7 +60,7 @@ EatSafe HK is an independent tool and is not affiliated with FEHD, the HKSAR Gov
 
 > Copy-paste this into the **"Single purpose"** field in the Chrome Web Store Privacy tab:
 
-Displays official Hong Kong FEHD food licence records, permit classifications, and statutory hygiene suspension notices directly on Google Maps when a user selects a restaurant in Hong Kong.
+EatSafe HK shows the Hong Kong FEHD food licence for the restaurant a user opens on Google Maps. When a Hong Kong food place is opened, a small card beside the Google Maps panel shows whether the venue holds an FEHD food licence, its licence type, licence number and expiry, and any licence suspension on FEHD's published list. The data comes from FEHD's public open data on DATA.GOV.HK. The extension does nothing else.
 
 ---
 
@@ -69,20 +69,15 @@ Displays official Hong Kong FEHD food licence records, permit classifications, a
 > Copy-paste each justification into the corresponding field in the Chrome Web Store Privacy tab:
 
 ### `storage`
-Used exclusively to cache recent FEHD restaurant lookup responses locally (`chrome.storage.local`, 6-hour TTL) to reduce redundant API calls, and to remember the user's recent inspections and widget preferences. Users can clear this local cache at any time from the extension popup.
+chrome.storage.local is used on the user's device only, for three things: (1) caching recent licence lookups for a few hours so reopening the same restaurant doesn't send a new request, (2) the list of recently checked places shown in the toolbar popup, and (3) the user's on/off setting for the card. Nothing in storage is sent anywhere. The popup has a button to clear the cache and recent list.
 
-### Content Script Matches (Google Maps only):
-- `*://www.google.com/maps/*`
-- `*://maps.google.com/*`
-- `*://www.google.com.hk/maps/*`
-- `*://maps.google.com.hk/*`
+### Host permission justification
+Google Maps (www.google.com/maps, maps.google.com, www.google.com.hk/maps, maps.google.com.hk): the content script runs only on Google Maps pages. It reads the name, address and map pin of the place the user opens, then shows the licence card beside the Google Maps panel. It does not read or change anything else on the page.
 
-**Justification**: Required to inject the EatSafe HK content script and stylesheet on Google Maps pages so the extension can detect when a user opens a Hong Kong restaurant place panel, read the displayed restaurant name and address from the panel DOM, and render the floating FEHD food licence verification card beside the sidebar.
+eatsafe-hk.pages.dev: this is the extension's own backend API. The service worker sends the place's name, address and map pin there to find the matching licence record in FEHD open data. No content script runs on this domain.
 
-### Host Permissions (API only):
-- `https://eatsafe-hk.pages.dev/*`
-
-**Justification**: No content script runs on this domain. Required only for the extension's background service worker to query the EatSafe HK backend API (`/api/restaurants`) hosted on Cloudflare Pages to retrieve matching FEHD open-data licence records.
+### Remote code
+No, I am not using Remote code.
 
 ---
 
@@ -96,7 +91,7 @@ Used exclusively to cache recent FEHD restaurant lookup responses locally (`chro
 | **Collects Web History?** | **No** | Browsing history is never tracked or logged. |
 | **Collects Website Content?** | **Yes (Ephemeral Lookup Only)** | Reads the public restaurant name and street address from the active Google Maps place panel solely to query the matching FEHD food licence record. Not stored on any server or linked to any user. |
 | **Certify compliance with Limited Use policy?** | **Yes** | Check all 3 Limited Use certification boxes in the Developer Console. |
-| **Privacy Policy URL** | `https://eatsafe-hk.pages.dev/privacy` | Live hosted policy page (also in repository at [`PRIVACY.md`](file:///C:/Users/lucas/.gemini/antigravity/worktrees/hkeats/eatsafe_hk_app/PRIVACY.md)). |
+| **Privacy Policy URL** | `https://eatsafe-hk.pages.dev/privacy` | Live hosted policy page (also in repository at [`PRIVACY.md`](PRIVACY.md)). |
 
 ---
 

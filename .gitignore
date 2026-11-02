@@ -11,3 +11,8 @@ scratch/
 d1_export/
 restaurants.db
 /''
+
+# Local AI-assistant tooling (kept on disk, not in the repo)
+.agents/
+AGENTS.md
+.vscode/
