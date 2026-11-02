@@ -2,7 +2,7 @@
 // EatSafe HK Background Service Worker (Manifest V3)
 
 const API_BASE = "https://eatsafe-hk.pages.dev";
-const CACHE_VERSION = "v14_branch_ranking";
+const CACHE_VERSION = "v15_number_on_street";
 const POSITIVE_CACHE_TTL_MS = 6 * 60 * 60 * 1000; // 6 hours (FEHD registry updates once every 24h)
 const NEGATIVE_CACHE_TTL_MS = 60 * 60 * 1000; // 1 hour for negative lookups to prevent repeated scans
 const MAX_RECENT_LOOKUPS = 10;
@@ -28,7 +28,8 @@ async function fetchFromBackend(endpoint) {
       const data = await res.json().catch(() => ({}));
       return { ok: false, status: 429, isQuotaExceeded: true, error: data.error || "Service temporarily busy." };
     }
-    return { ok: false, status: res.status, isOffline: false, error: `HTTP ${res.status}` };
+    // Any other failure (5xx, Cloudflare error page) is a connection problem, never "no licence found"
+    return { ok: false, status: res.status, isOffline: true, error: `HTTP ${res.status}` };
   } catch (err) {
     return { ok: false, isOffline: true, error: err.message };
   }

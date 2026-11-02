@@ -1375,10 +1375,11 @@
     // ~120-200ms BEFORE the address button & URL pin coordinates finish hydrating (often still empty
     // or temporarily holding the previous venue's address). Wait 1 brief settle tick so we fire
     // 1 single complete request instead of 2 requests!
+    // The place pin (!3d/!4d) is often added to the URL after the title, so also wait one tick for it
     if (
       normName !== lastResolvedName &&
       hydrationRetriedForName !== normName &&
-      (!normAddr || (lastResolvedAddress && normAddr === lastResolvedAddress))
+      (!normAddr || (lastResolvedAddress && normAddr === lastResolvedAddress) || lat == null)
     ) {
       hydrationRetriedForName = normName;
       schedulePlaceCheck(180);
@@ -1390,7 +1391,9 @@
       container.style.display = "block";
     }
 
-    const key = `${normName}::${(secondaryName || "").toLowerCase()}::${normAddr}`;
+    // The pin is part of the key so a lookup sent before the pin loaded is redone once it arrives
+    const pinKey = lat != null && lng != null ? `${lat.toFixed(4)},${lng.toFixed(4)}` : "";
+    const key = `${normName}::${(secondaryName || "").toLowerCase()}::${normAddr}::${pinKey}`;
     if (key === lastPlaceKey) {
       // Same restaurant, but side panel may have moved or toggled: update position smoothly
       updateWidgetPosition();

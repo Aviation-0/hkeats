@@ -653,6 +653,32 @@ export async function onRequestGet(context) {
           .filter((w) => w && (/^\d/.test(w) ? w.length <= 5 : w.length > 2 && !GENERIC_ADDRESS_WORDS.has(w)))
       ),
     ];
+    // "<number> <street>" pairs in the Google address (e.g. "93 queensway"). A licence with the same
+    // number on that street is strong evidence; a different number on it ("88 QUEENSWAY") contradicts.
+    const numberStreetPairs = [];
+    for (const m of normalizeForCompare(rawAddress).matchAll(/\b(\d+)[a-z]?\s+([a-z]{3,})/g)) {
+      if (!GENERIC_ADDRESS_WORDS.has(m[2])) numberStreetPairs.push({ num: m[1], street: m[2] });
+    }
+    const numbersOnStreet = (num, candidateAddress, street) => {
+      const out = [];
+      const re = new RegExp(`(\\d+)[a-z]?(?:\\s*[-–至&]\\s*(\\d+)[a-z]?)?\\s+${street}\\b`, "gi");
+      for (const m of String(candidateAddress || "").matchAll(re)) {
+        const lo = Number(m[1]);
+        const hi = m[2] ? Number(m[2]) : lo;
+        out.push(Number(num) >= lo && Number(num) <= hi);
+      }
+      return out;
+    };
+    // Two-word building or branch names from the shop sign ("STARBUCKS Admiralty Centre Shop") that
+    // appear in exactly one candidate's address; a phrase every branch shares ("causeway bay") is ignored
+    const SIGN_FILLER = new Set(["restaurant", "cafe", "coffee", "shop", "store", "branch", "kitchen", "bar", "tea"]);
+    const signWords = normalizeForCompare(rawShopsign).split(" ").filter((w) => w.length > 2 && !GENERIC_ADDRESS_WORDS.has(w) && !SIGN_FILLER.has(w));
+    const signPhrases = signWords.slice(1).map((w, i) => `${signWords[i]} ${w}`);
+    const signPhraseCounts = new Map();
+    for (const phrase of signPhrases) {
+      const n = directCandidates.filter((r) => normalizeForCompare(r.address_en).includes(phrase) && !normalizeForCompare(r.name_en).includes(phrase)).length;
+      signPhraseCounts.set(phrase, n);
+    }
     const validDirect = [];
     for (const r of directCandidates) {
       if (queryGeo.region && !isGeographicallyCompatible(queryGeo, r.district)) {
@@ -722,10 +748,21 @@ export async function onRequestGet(context) {
         }
       }
 
+      let numberOnStreet = false;
+      let numberConflict = false;
+      for (const { num, street } of numberStreetPairs) {
+        const hits = numbersOnStreet(num, r.address_en, street);
+        if (hits.some(Boolean)) numberOnStreet = true;
+        else if (hits.length > 0) numberConflict = true;
+      }
+      const candAddrNorm = normalizeForCompare(r.address_en);
+      const signPhraseMatch = signPhrases.some((ph) => signPhraseCounts.get(ph) === 1 && candAddrNorm.includes(ph));
+
       const hasLocationEvidence =
         (hasGeocode && distanceMeters != null && distanceMeters <= 200) ||
-        sharedAddressTokens >= 2 ||
-        (numberMatched && sharedStreet);
+        numberOnStreet ||
+        signPhraseMatch ||
+        (!numberConflict && (sharedAddressTokens >= 2 || (numberMatched && sharedStreet)));
 
       const normClean = isPlaceholderName(cleanShopsign) ? "" : normalizeForCompare(cleanShopsign);
       const normCandEn = isPlaceholderName(r.name_en) ? "" : normalizeForCompare(r.name_en);
@@ -747,6 +784,9 @@ export async function onRequestGet(context) {
       // differently-worded licence name ("McDonald's Restaurant") at the right address beats an
       // identically-named branch elsewhere.
       let rankScore = locationScore + sharedAddressTokens * 3 + (numberMatched && sharedStreet ? 6 : 0);
+      if (numberOnStreet) rankScore += 8;
+      if (numberConflict) rankScore -= 6;
+      if (signPhraseMatch) rankScore += 14;
       if (normRawShopsign && normalizeForCompare(r.name_en) === normRawShopsign) rankScore += 3;
       if (branchLower && ((r.name_en || "").toLowerCase().includes(branchLower) || (r.address_en || "").toLowerCase().includes(branchLower))) rankScore += 8;
       if (queryGeo.district && (r.district || "").toUpperCase().includes(queryGeo.district)) rankScore += 3;
