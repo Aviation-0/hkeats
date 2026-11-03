@@ -9,7 +9,7 @@ EatSafe HK uses an automated, lightweight **Incremental Diff Engine** to keep th
 
 1. **Daily Trigger**:
    - The Hong Kong FEHD updates their open datasets overnight between 04:00 and 06:00 HKT.
-   - Every day at **21:00 UTC (05:00 Hong Kong Time)**, GitHub Actions triggers `.github/workflows/fehd-sync.yml`.
+   - Every day at **22:17 UTC (06:17 Hong Kong Time)**, GitHub Actions triggers `.github/workflows/fehd-sync.yml`.
 
 2. **Smart Diffing Engine (`scripts/sync_d1_diff.mjs`)**:
    - Fetches all 6 official FEHD datasets (Restaurants, Other Food / Bakeries, Restricted Permits in English & Traditional Chinese).

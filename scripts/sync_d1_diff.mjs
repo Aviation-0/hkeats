@@ -17,6 +17,7 @@ import { fetchAndParseAllFehdRecords } from "../lib/fehd-sync.mjs";
 import { geocodeMany, addressKey, isGeocodable } from "../lib/geocode.mjs";
 
 const isDryRun = process.argv.includes("--dry-run");
+const retryNullCoords = process.argv.includes("--retry-null-coords");
 const target = process.argv.includes("--local") ? "--local" : "--remote";
 const DB_NAME = "eatsafe-hk-db";
 
@@ -43,12 +44,29 @@ function escapeSql(val) {
 // Run wrangler's JS entry with this Node binary (no shell), so SQL arguments are never re-split
 const WRANGLER_BIN = path.join(process.cwd(), "node_modules", "wrangler", "bin", "wrangler.js");
 
-function wrangler(args) {
-  return execFileSync(process.execPath, [WRANGLER_BIN, "d1", "execute", DB_NAME, target, ...args], {
-    encoding: "utf8",
-    maxBuffer: 256 * 1024 * 1024,
-    stdio: ["ignore", "pipe", "inherit"],
-  });
+function sleepSync(ms) {
+  Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ms);
+}
+
+function wrangler(args, retries = 4) {
+  let lastErr = null;
+  for (let attempt = 1; attempt <= retries; attempt++) {
+    try {
+      return execFileSync(process.execPath, [WRANGLER_BIN, "d1", "execute", DB_NAME, target, ...args], {
+        encoding: "utf8",
+        maxBuffer: 256 * 1024 * 1024,
+        stdio: ["ignore", "pipe", "inherit"],
+      });
+    } catch (err) {
+      lastErr = err;
+      if (attempt < retries) {
+        const delayMs = 2000 * Math.pow(2, attempt - 1);
+        console.warn(`⚠️ [D1 Sync] Wrangler command attempt ${attempt}/${retries} failed (${err.message}). Retrying in ${delayMs}ms...`);
+        sleepSync(delayMs);
+      }
+    }
+  }
+  throw lastErr;
 }
 
 function queryD1(sql) {
@@ -78,13 +96,18 @@ function readAllD1Rows() {
   return rows;
 }
 
-function hasRealCoords(row) {
+function hasPlaceholderCoords(row) {
   return (
     row &&
     row.lat != null &&
     row.lng != null &&
-    !(Number(row.lat) === PLACEHOLDER_LAT && Number(row.lng) === PLACEHOLDER_LNG)
+    Number(row.lat) === PLACEHOLDER_LAT &&
+    Number(row.lng) === PLACEHOLDER_LNG
   );
+}
+
+function hasRealCoords(row) {
+  return row && row.lat != null && row.lng != null && !hasPlaceholderCoords(row);
 }
 
 function sameValue(a, b) {
@@ -147,7 +170,13 @@ async function runDiffSync() {
       r.lat = known.lat;
       r.lng = known.lng;
     } else if (!geocodeCache.has(k)) {
-      needGeocode.push(r);
+      // Only query ALS for newly added premises, premises whose address changed, or legacy placeholder
+      // rows (unless --retry-null-coords is passed) so un-geocodable addresses aren't retried daily.
+      const alreadyAttemptedInD1 =
+        prev && addressKey(prev.address_en) === k && !hasPlaceholderCoords(prev);
+      if (!alreadyAttemptedInD1 || retryNullCoords) {
+        needGeocode.push(r);
+      }
     }
   }
 

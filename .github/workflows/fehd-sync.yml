@@ -2,8 +2,8 @@ name: Daily FEHD Sync to Cloudflare D1
 
 on:
   schedule:
-    # Runs at 21:00 UTC (05:00 Hong Kong Time) every day after FEHD overnight publication
-    - cron: '0 21 * * *'
+    # Runs at 22:17 UTC (06:17 Hong Kong Time) every day after FEHD's 04:00-06:00 HKT overnight publication
+    - cron: '17 22 * * *'
   workflow_dispatch: # Allows manual one-click trigger from GitHub Actions tab
 
 permissions:
